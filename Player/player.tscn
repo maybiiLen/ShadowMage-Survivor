@@ -14,7 +14,7 @@ size = Vector2(8, 20)
 [sub_resource type="CircleShape2D" id="CircleShape2D_m3ofp"]
 radius = 374.733
 
-[node name="Player" type="CharacterBody2D"]
+[node name="Player" type="CharacterBody2D" groups=["player"]]
 motion_mode = 1
 script = ExtResource("1_mnti6")
 
@@ -58,6 +58,9 @@ wait_time = 3.0
 [node name="TornadoAttackTimer" type="Timer" parent="attack/TornadoTimer"]
 unique_name_in_owner = true
 wait_time = 0.2
+
+[node name="JavelinBase" type="Node2D" parent="attack"]
+unique_name_in_owner = true
 
 [node name="EnemyDetectionArea" type="Area2D" parent="."]
 collision_layer = 4
