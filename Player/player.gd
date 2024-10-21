@@ -158,3 +158,31 @@ func _on_grab_area_area_entered(area: Area2D) -> void:
 func _on_collect_area_area_entered(area: Area2D) -> void:
 	if area.is_in_group("loot"):
 		var gem_exp = area.collect()
+		calculate_experience(gem_exp)
+	
+func calculate_experience(gem_exp):
+	var exp_required = calculate_experiencecap()
+	collected_experience += gem_exp
+	if experience + collected_experience >= exp_required:
+		collected_experience -= exp_required - experience
+		experience_level += 1
+		print("Level:",experience_level)
+		experience = 0
+		exp_required = calculate_experiencecap()
+	else:
+		experience += collected_experience
+		collected_experience = 0
+func calculate_experiencecap():
+	var exp_cap = experience_level
+	if experience_level < 20:
+		exp_cap = experience_level * 5
+	elif experience_level < 40:
+		exp_cap + 95 * (experience_level-19)*8
+	else:
+		exp_cap = 225 + (experience_level - 39) * 12
+	
+	return exp_cap
+	
+	
+		
+	
