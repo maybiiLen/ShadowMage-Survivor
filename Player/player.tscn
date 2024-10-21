@@ -1,8 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://b6bld4gm10qcc"]
+[gd_scene load_steps=12 format=3 uid="uid://b6bld4gm10qcc"]
 
 [ext_resource type="Script" path="res://Player/player.gd" id="1_mnti6"]
 [ext_resource type="Texture2D" uid="uid://c4v34y0bqvnhy" path="res://Textures/Player/player_sprite.png" id="1_nbo6c"]
 [ext_resource type="PackedScene" uid="uid://cwbrs0m7ub23s" path="res://Utility/hurt_box.tscn" id="3_13232"]
+[ext_resource type="Texture2D" uid="uid://ebtbvmkf7dks" path="res://Textures/GUI/exp_background.png" id="4_3navn"]
+[ext_resource type="Texture2D" uid="uid://8fcftkl5n800" path="res://Textures/GUI/exp_progress.png" id="5_qa016"]
+[ext_resource type="FontFile" uid="uid://deansgva2wv7a" path="res://Font/tenderness.otf" id="6_3u51c"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rlbph"]
 radius = 3.0
@@ -89,6 +92,34 @@ collision_mask = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CollectArea"]
 shape = SubResource("CircleShape2D_6dd66")
+
+[node name="GUILayer" type="CanvasLayer" parent="."]
+
+[node name="GUI" type="Control" parent="GUILayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 640.0
+offset_bottom = 360.0
+
+[node name="ExperienceBar" type="TextureProgressBar" parent="GUILayer/GUI"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture_under = ExtResource("4_3navn")
+texture_progress = ExtResource("5_qa016")
+
+[node name="lbl_level" type="Label" parent="GUILayer/GUI/ExperienceBar"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 540.0
+offset_right = 640.0
+offset_bottom = 20.0
+theme_override_fonts/font = ExtResource("6_3u51c")
+theme_override_font_sizes/font_size = 16
+text = "Level: 1"
+horizontal_alignment = 1
+vertical_alignment = 2
 
 [connection signal="hurt" from="HurtBox" to="." method="_on_hurt_box_hurt"]
 [connection signal="timeout" from="attack/ShadowSpearTimer" to="." method="_on_shadow_spear_timer_timeout"]
