@@ -45,6 +45,10 @@ var enemy_close = []
 #GUI
 @onready var expBar = get_node("%ExperienceBar")
 @onready var lbllevel = get_node("%lbl_level")
+@onready var levelPanel = get_node("%LevelUp")
+@onready var upgradeOptions = get_node("%UpgradeOption")
+@onready var sndLevelUp = get_node("%snd_levelup")
+@onready var itemOptions = preload("res://Utility/item_option.tscn")
 
 func _ready():
 	attack()
@@ -171,9 +175,9 @@ func calculate_experience(gem_exp):
 	if experience + collected_experience >= exp_required:
 		collected_experience -= exp_required - experience
 		experience_level += 1
-		lbllevel.text = str("Level:", experience_level)
 		experience = 0
 		exp_required = calculate_experiencecap()
+		levelup()
 		calculate_experience(0)
 	else:
 		experience += collected_experience
@@ -195,3 +199,26 @@ func set_expbar(set_value = 1, set_max_value = 100):
 	expBar.value = set_value
 	expBar.max_value = set_max_value
 	
+func levelup():
+	sndLevelUp.play()
+	lbllevel.text = str("Level:", experience_level)
+	var tween = levelPanel.create_tween()
+	tween.tween_property(levelPanel,"position",Vector2(220,50),0.2).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_IN)
+	tween.play()
+	levelPanel.visible = true
+	var option = 0
+	var optionmax = 3
+	while option < optionmax:
+		var option_choice = itemOptions.instantiate()
+		upgradeOptions.add_child(option_choice)
+		option += 1
+	get_tree().paused = true
+	
+func upgrade_character(upgrade):
+	var option_children = upgradeOptions.get_children()
+	for i  in option_children:
+		i.queue_free()
+	levelPanel.visible = false
+	levelPanel.position = Vector2(800,50)
+	get_tree().paused = false
+	calculate_experience(0)
