@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://cwf05oxsvpubx"]
+[gd_scene load_steps=5 format=3 uid="uid://dma8d5r2442dc"]
 
 [ext_resource type="Script" path="res://Player/Attack/javalin.gd" id="1_te153"]
 [ext_resource type="Texture2D" uid="uid://bwqnupx40l4jr" path="res://Textures/Items/Weapons/javelin_3_new.png" id="2_h2ruw"]
