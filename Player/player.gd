@@ -20,6 +20,15 @@ var javelin = preload("res://Player/Attack/javalin.tscn")
 @onready var tornadoAttackTimer = get_node("%TornadoAttackTimer")
 @onready var javelinBase = get_node("%JavelinBase")
 
+#UPGRADES
+var collected_upgrades = []
+var upgrade_options = []
+var armor = 0
+var speed  = 0
+var spell_cooldown = 0
+var spell_size = 0
+var additional_attacks = 0
+
 #Tornado
 var tornado_ammo = 0
 var tornado_baseammo = 1
@@ -210,6 +219,7 @@ func levelup():
 	var optionmax = 3
 	while option < optionmax:
 		var option_choice = itemOptions.instantiate()
+		option_choice.item = get_random_item()
 		upgradeOptions.add_child(option_choice)
 		option += 1
 	get_tree().paused = true
@@ -218,7 +228,33 @@ func upgrade_character(upgrade):
 	var option_children = upgradeOptions.get_children()
 	for i  in option_children:
 		i.queue_free()
+	upgrade_options.clear()
+	collected_upgrades.append(upgrade)
 	levelPanel.visible = false
 	levelPanel.position = Vector2(800,50)
 	get_tree().paused = false
 	calculate_experience(0)
+
+func get_random_item():
+	var dblist = []
+	for i in UpgradeDb.UPGRADES:
+		if i in collected_upgrades: #exp
+			pass
+		elif i in upgrade_options: #exp
+			pass
+		elif UpgradeDb.UPGRADES[i]["type"] == "items": #exxp
+			pass
+		elif UpgradeDb.UPGRADES[i]["prerequisite"].size() > 0: #exp
+			for n in UpgradeDb.UPGRADES[i]["prerequisite"]:
+				if not n in collected_upgrades:
+					pass
+				else:
+					dblist.append(i)
+		else:
+				dblist.append(i)
+	if dblist.size() > 0:
+		var randomitem = dblist.pick_random()
+		upgrade_options.append(randomitem)
+		return randomitem
+	else:
+		return null
