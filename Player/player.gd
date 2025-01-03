@@ -2,6 +2,7 @@ extends CharacterBody2D
 
 var movement_speed = 40.0
 var hp = 80
+var maxhp = 80
 var last_movement = Vector2.UP
 
 var experience = 0
@@ -42,7 +43,7 @@ var shadowspear_attackspeed = 1.5
 var shadowspear_level = 1
 
 #Javelin
-var javelin_ammo = 3
+var javelin_ammo = 1
 var javelin_level = 1
 
 #enemy related
@@ -91,21 +92,21 @@ func movement():
 	
 func attack():
 	if shadowspear_level > 0:
-		shadowSpearTimer.wait_time = shadowspear_attackspeed
+		shadowSpearTimer.wait_time = shadowspear_attackspeed * (1-spell_cooldown)
 		if shadowSpearTimer.is_stopped():
 			shadowSpearTimer.start()
 	if tornado_level > 0:
-		tornadoTimer.wait_time = tornado_attackspeed
+		tornadoTimer.wait_time = tornado_attackspeed * (1-spell_cooldown)
 		if tornadoTimer.is_stopped():
 			tornadoTimer.start()
 	if javelin_level > 0:
 		spawn_javelin()
 func _on_hurt_box_hurt(damage, _angle, _knockback):
-	hp -= damage
+	hp -= clamp(damage - armor, 1.0, 999.0)
 	print(hp)
 
 func _on_tornado_timer_timeout() -> void:
-	tornado_ammo += tornado_baseammo
+	tornado_ammo += tornado_baseammo + additional_attacks
 	tornadoAttackTimer.start()
 
 func _on_tornado_attack_timer_timeout() -> void:
@@ -123,7 +124,7 @@ func _on_tornado_attack_timer_timeout() -> void:
 	
 func spawn_javelin():
 	var get_javelin_total = javelinBase.get_child_count()
-	var calc_spawn = javelin_ammo - get_javelin_total
+	var calc_spawn = (javelin_ammo + additional_attacks) - get_javelin_total
 	while calc_spawn > 0:
 		var javelin_spawn = javelin.instantiate()
 		javelin_spawn.global_position = global_position
@@ -132,7 +133,7 @@ func spawn_javelin():
 		
 
 func _on_shadow_spear_timer_timeout() -> void:
-	shadowspear_ammo += shadowspear_baseammo
+	shadowspear_ammo += shadowspear_baseammo + additional_attacks
 	shadowSpearAttackTimer.start()
 
 
@@ -187,7 +188,6 @@ func calculate_experience(gem_exp):
 		experience = 0
 		exp_required = calculate_experiencecap()
 		levelup()
-		calculate_experience(0)
 	else:
 		experience += collected_experience
 		collected_experience = 0
@@ -225,6 +225,55 @@ func levelup():
 	get_tree().paused = true
 	
 func upgrade_character(upgrade):
+	match upgrade:
+		"shadowspear1":
+			shadowspear_level = 1
+			shadowspear_baseammo += 1
+		"shadowspear2":
+			shadowspear_level = 2
+			shadowspear_baseammo += 1
+		"shadowspear3":
+			shadowspear_level = 3
+		"shadowspear4":
+			shadowspear_level = 4
+			shadowspear_baseammo += 2
+		"tornado1":
+			tornado_level = 1
+			tornado_baseammo += 1
+		"tornado2":
+			tornado_level = 2
+			tornado_baseammo += 1
+		"tornado3":
+			tornado_level = 3
+			tornado_attackspeed -= 0.5
+		"tornado4":
+			tornado_level = 4
+			tornado_baseammo += 1
+		"javelin1":
+			javelin_level = 1
+			javelin_ammo = 1
+		"javelin2":
+			javelin_level = 2
+		"javelin3":
+			javelin_level = 3
+		"javelin4":
+			javelin_level = 4
+		"armor1","armor2","armor3","armor4":
+			armor += 1
+		"speed1","speed2","speed3","speed4":
+			movement_speed += 20.0
+		"tome1","tome2","tome3","tome4":
+			spell_size += 0.10
+		"scroll1","scroll2","scroll3","scroll4":
+			spell_cooldown += 0.05
+		"ring1","ring2":
+			additional_attacks += 1
+		"food":
+			hp += 20
+			hp = clamp(hp,0,maxhp)
+	
+	
+	
 	var option_children = upgradeOptions.get_children()
 	for i  in option_children:
 		i.queue_free()
