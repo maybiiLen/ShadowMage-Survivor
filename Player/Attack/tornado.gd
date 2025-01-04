@@ -23,7 +23,29 @@ func _ready():
 			hp = 9999
 			speed = 100.0
 			damage = 5
-			attack_size = 1.0
+			knockback_amount = 100
+			attack_size = 1.0 * (1 + player.spell_size)
+		2:
+			level = 1
+			hp = 9999
+			speed = 100.0
+			damage = 5
+			knockback_amount = 100
+			attack_size = 1.0 * (1 + player.spell_size)
+		3:
+			level = 1
+			hp = 9999
+			speed = 100.0
+			damage = 5
+			knockback_amount = 100
+			attack_size = 1.0 * (1 + player.spell_size)
+		4:
+			level = 1
+			hp = 9999
+			speed = 100.0
+			damage = 5
+			knockback_amount = 125
+			attack_size = 1.0 * (1 + player.spell_size)
 	
 	var move_to_less = Vector2.ZERO
 	var move_to_more = Vector2.ZERO

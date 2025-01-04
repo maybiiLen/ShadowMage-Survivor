@@ -32,19 +32,19 @@ var additional_attacks = 0
 
 #Tornado
 var tornado_ammo = 0
-var tornado_baseammo = 1
-var tornado_attackspeed = 3
-var tornado_level = 1
+var tornado_baseammo = 0
+var tornado_attackspeed = 0
+var tornado_level = 0
 
 #shadowSpear
 var shadowspear_ammo = 0
-var shadowspear_baseammo = 1
+var shadowspear_baseammo = 0
 var shadowspear_attackspeed = 1.5
-var shadowspear_level = 1
+var shadowspear_level = 0
 
 #Javelin
-var javelin_ammo = 1
-var javelin_level = 1
+var javelin_ammo = 0
+var javelin_level = 0
 
 #enemy related
 var enemy_close = []
@@ -61,6 +61,7 @@ var enemy_close = []
 @onready var itemOptions = preload("res://Utility/item_option.tscn")
 
 func _ready():
+	upgrade_character("shadowspear1")
 	attack()
 	set_expbar(experience,calculate_experiencecap())
 
@@ -130,7 +131,11 @@ func spawn_javelin():
 		javelin_spawn.global_position = global_position
 		javelinBase.add_child(javelin_spawn)
 		calc_spawn -= 1
-		
+	#Upgrade Javalin
+	var get_javelins = javelinBase.get_children()
+	for i in get_javelins:
+		if i.has_method("update_javelin"):
+			i.update_javelin()
 
 func _on_shadow_spear_timer_timeout() -> void:
 	shadowspear_ammo += shadowspear_baseammo + additional_attacks
@@ -272,8 +277,7 @@ func upgrade_character(upgrade):
 			hp += 20
 			hp = clamp(hp,0,maxhp)
 	
-	
-	
+	attack()
 	var option_children = upgradeOptions.get_children()
 	for i  in option_children:
 		i.queue_free()
@@ -287,17 +291,18 @@ func upgrade_character(upgrade):
 func get_random_item():
 	var dblist = []
 	for i in UpgradeDb.UPGRADES:
-		if i in collected_upgrades: #exp
+		if i in collected_upgrades: ##Find already collected upgrades
 			pass
-		elif i in upgrade_options: #exp
+		elif i in upgrade_options: #if the upgrade is already an option
 			pass
-		elif UpgradeDb.UPGRADES[i]["type"] == "items": #exxp
+		elif UpgradeDb.UPGRADES[i]["type"] == "items": #dont pick food
 			pass
-		elif UpgradeDb.UPGRADES[i]["prerequisite"].size() > 0: #exp
+		elif UpgradeDb.UPGRADES[i]["prerequisite"].size() > 0: #check for prerequisite
+			var to_add = true
 			for n in UpgradeDb.UPGRADES[i]["prerequisite"]:
 				if not n in collected_upgrades:
-					pass
-				else:
+					to_add = false
+			if to_add:
 					dblist.append(i)
 		else:
 				dblist.append(i)
