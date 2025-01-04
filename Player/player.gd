@@ -8,6 +8,7 @@ var last_movement = Vector2.UP
 var experience = 0
 var experience_level = 1
 var collected_experience = 0
+var time = 0
 
 #attack
 var shadowSpear = preload("res://Player/Attack/shadow_spear.tscn")
@@ -59,11 +60,17 @@ var enemy_close = []
 @onready var upgradeOptions = get_node("%UpgradeOption")
 @onready var sndLevelUp = get_node("%snd_levelup")
 @onready var itemOptions = preload("res://Utility/item_option.tscn")
+@onready var healthBar = get_node("%HealthBar")
+@onready var lblTimer = get_node("%lbltimer")
+@onready var collectedWeapons = get_node("%CollectedWeapons")
+@onready var collectedUpgrades = get_node("%CollectedUpgrades")
+@onready var itemContainer = preload("res://Player/GUI/item_container.tscn")
 
 func _ready():
 	upgrade_character("shadowspear1")
 	attack()
 	set_expbar(experience,calculate_experiencecap())
+	_on_hurt_box_hurt(0,0,0)
 
 func _physics_process(delta):
 	movement()
@@ -104,7 +111,8 @@ func attack():
 		spawn_javelin()
 func _on_hurt_box_hurt(damage, _angle, _knockback):
 	hp -= clamp(damage - armor, 1.0, 999.0)
-	print(hp)
+	healthBar.max_value = maxhp
+	healthBar.value = hp
 
 func _on_tornado_timer_timeout() -> void:
 	tornado_ammo += tornado_baseammo + additional_attacks
@@ -276,7 +284,7 @@ func upgrade_character(upgrade):
 		"food":
 			hp += 20
 			hp = clamp(hp,0,maxhp)
-	
+	adjust_gui_collection(upgrade)
 	attack()
 	var option_children = upgradeOptions.get_children()
 	for i  in option_children:
@@ -312,3 +320,31 @@ func get_random_item():
 		return randomitem
 	else:
 		return null
+		
+func change_time(argtime = 0):
+	time = argtime
+	var get_m = int(time/60.0)
+	var get_s = time % 60
+	if get_m < 10:
+		get_m = str(0,get_m)
+	if get_s < 10:
+		get_s = str(0,get_s)
+	lblTimer.text = str(get_m,":", get_s)
+
+func adjust_gui_collection(upgrade):
+	var get_upgraded_displaynames = UpgradeDb.UPGRADES[upgrade]["displayname"]
+	var get_type = UpgradeDb.UPGRADES[upgrade]["type"]
+	if get_type != "item":
+		var get_collected_displaynames = []
+		for i in collected_upgrades:
+			get_collected_displaynames.append(UpgradeDb.UPGRADES[i]["displayname"])
+		if not get_upgraded_displaynames in get_collected_displaynames:
+			var new_item = itemContainer.instantiate()
+			new_item.upgrade = upgrade
+			match get_type:
+				"weapon":
+					collectedWeapons.add_child(new_item)
+				"upgrade":
+					collectedUpgrades.add_child(new_item)
+					
+	
