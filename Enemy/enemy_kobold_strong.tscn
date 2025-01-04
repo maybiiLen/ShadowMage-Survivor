@@ -1,14 +1,14 @@
-[gd_scene load_steps=12 format=3 uid="uid://5ioxoww2jbw2"]
+[gd_scene load_steps=12 format=3 uid="uid://dllfhvp3so210"]
 
-[ext_resource type="Texture2D" uid="uid://vhpk75krf0jx" path="res://Textures/Enemy/kolbold_weak.png" id="1_4c2y4"]
-[ext_resource type="Script" path="res://Enemy/enemy.gd" id="1_clg2u"]
-[ext_resource type="PackedScene" uid="uid://cwbrs0m7ub23s" path="res://Utility/hurt_box.tscn" id="3_ve38x"]
-[ext_resource type="PackedScene" uid="uid://bb1ccyty0gydi" path="res://Utility/hit_box.tscn" id="4_i6tw6"]
-[ext_resource type="AudioStream" uid="uid://c0in2bdhjr1j5" path="res://Audio/SoundEffect/enemy_hit.ogg" id="5_uy2qy"]
+[ext_resource type="Script" path="res://Enemy/enemy.gd" id="1_nssjg"]
+[ext_resource type="Texture2D" uid="uid://jnskg1kexun2" path="res://Textures/Enemy/juggernaut.png" id="2_ihx81"]
+[ext_resource type="PackedScene" uid="uid://cwbrs0m7ub23s" path="res://Utility/hurt_box.tscn" id="3_vwlet"]
+[ext_resource type="PackedScene" uid="uid://bb1ccyty0gydi" path="res://Utility/hit_box.tscn" id="4_kl536"]
+[ext_resource type="AudioStream" uid="uid://c0in2bdhjr1j5" path="res://Audio/SoundEffect/enemy_hit.ogg" id="5_0yy5u"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0mgl5"]
-radius = 5.0
-height = 18.0
+radius = 6.0
+height = 24.0
 
 [sub_resource type="Animation" id="Animation_3vjuh"]
 length = 0.001
@@ -52,20 +52,27 @@ _data = {
 size = Vector2(19, 25)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sjsre"]
-size = Vector2(10, 20)
+size = Vector2(32.9375, 37.125)
 
-[node name="enemy_goblin_weak" type="CharacterBody2D"]
+[node name="enemy_juggernaut" type="CharacterBody2D"]
 collision_layer = 5
 collision_mask = 5
 motion_mode = 1
-script = ExtResource("1_clg2u")
+script = ExtResource("1_nssjg")
+movement_speed = 40.0
+hp = 350
+knockback_recovery = 25.0
+experience = 100
+damage = 10
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("1_4c2y4")
+position = Vector2(1, -1)
+scale = Vector2(1.15, 1.15)
+texture = ExtResource("2_ihx81")
 hframes = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(2, 2)
+position = Vector2(1, -2)
 shape = SubResource("CapsuleShape2D_0mgl5")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -73,27 +80,26 @@ libraries = {
 "": SubResource("AnimationLibrary_xt0l8")
 }
 
-[node name="HurtBox" parent="." instance=ExtResource("3_ve38x")]
+[node name="HurtBox" parent="." instance=ExtResource("3_vwlet")]
 visible = false
 collision_layer = 4
 collision_mask = 4
 HurtBoxType = 1
 
 [node name="CollisionShape2D" parent="HurtBox" index="0"]
-visible = false
 position = Vector2(1.5, 3.5)
 shape = SubResource("RectangleShape2D_ym6iu")
 
-[node name="HitBox" parent="." instance=ExtResource("4_i6tw6")]
+[node name="HitBox" parent="." instance=ExtResource("4_kl536")]
 collision_layer = 2
 collision_mask = 2
 
 [node name="CollisionShape2D" parent="HitBox" index="0"]
-position = Vector2(2, 3)
+position = Vector2(1, -1)
 shape = SubResource("RectangleShape2D_sjsre")
 
 [node name="snd_hit" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("5_uy2qy")
+stream = ExtResource("5_0yy5u")
 volume_db = -10.0
 
 [connection signal="hurt" from="HurtBox" to="." method="_on_hurt_box_hurt"]
