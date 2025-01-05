@@ -66,6 +66,14 @@ var enemy_close = []
 @onready var collectedUpgrades = get_node("%CollectedUpgrades")
 @onready var itemContainer = preload("res://Player/GUI/item_container.tscn")
 
+@onready var deathPanel = get_node("%DeathPanel")
+@onready var lblResult = get_node("%lbl_result")
+@onready var sndVictory = get_node("%snd_victory")
+@onready var sndLose = get_node("%snd_lose")
+
+#signal
+signal playerdeath
+
 func _ready():
 	upgrade_character("shadowspear1")
 	attack()
@@ -113,6 +121,8 @@ func _on_hurt_box_hurt(damage, _angle, _knockback):
 	hp -= clamp(damage - armor, 1.0, 999.0)
 	healthBar.max_value = maxhp
 	healthBar.value = hp
+	if hp <= 0:
+		death()
 
 func _on_tornado_timer_timeout() -> void:
 	tornado_ammo += tornado_baseammo + additional_attacks
@@ -348,3 +358,21 @@ func adjust_gui_collection(upgrade):
 					collectedUpgrades.add_child(new_item)
 					
 	
+func death():
+	deathPanel.visible = true
+	emit_signal("playerdeath")
+	get_tree().paused = true
+	var tween = deathPanel.create_tween()
+	tween.tween_property(deathPanel,"position",Vector2(220,50),3.0).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
+	tween.play()
+	if time >= 300:
+		lblResult.text = "You Win"
+		sndVictory.play()
+	else:
+		lblResult.text = "You Lose"
+		sndLose.play()
+
+
+func _on_btn_menu_click_end():
+	get_tree().paused =  false
+	var _level = get_tree().change_scene_to_file("res://TitleScreen/menu.tscn")

@@ -11,7 +11,8 @@ offset_right = 8.0
 offset_bottom = 8.0
 theme_override_fonts/font = ExtResource("1_xpiyw")
 theme_override_font_sizes/font_size = 20
-text = "Example"
+text = "Menu
+"
 script = ExtResource("1_0pccg")
 
 [node name="snd_hover" type="AudioStreamPlayer" parent="."]

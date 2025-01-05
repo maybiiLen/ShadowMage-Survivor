@@ -24,7 +24,8 @@ script = ExtResource("1_wrllv")
 movement_speed = 150.0
 hp = 9999
 knockback_recovery = 9999.0
-damage = 20
+experience = 100
+enemy_damage = 20
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_wh8to")

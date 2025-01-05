@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://yooll324e8uw"]
+[gd_scene load_steps=22 format=3 uid="uid://yooll324e8uw"]
 
 [ext_resource type="Texture2D" uid="uid://vfh3obfqpoev" path="res://Textures/dirt_full_new.png" id="1_u2nnb"]
 [ext_resource type="PackedScene" uid="uid://b6bld4gm10qcc" path="res://Player/player.tscn" id="2_ce1ys"]
@@ -10,6 +10,8 @@
 [ext_resource type="PackedScene" uid="uid://dbfr5lgycygyk" path="res://Enemy/enemy_cyclops.tscn" id="7_333jh"]
 [ext_resource type="PackedScene" uid="uid://0kjuw1vcje6u" path="res://Enemy/enemy_juggernaut.tscn" id="8_07fsw"]
 [ext_resource type="PackedScene" uid="uid://vok7okceikbt" path="res://Enemy/enemy_super.tscn" id="9_h2ss0"]
+[ext_resource type="AudioStream" uid="uid://c5f7fque4k784" path="res://Audio/Music/Under Night In-Birth - Blood Drain -Again- (Eltnum's theme) [8-bit].mp3" id="11_ewlkv"]
+[ext_resource type="Script" path="res://Audio/Music/snd_music.gd" id="12_5tavj"]
 
 [sub_resource type="Resource" id="Resource_ujhuy"]
 script = ExtResource("4_3f3hf")
@@ -27,7 +29,7 @@ enemy = ExtResource("5_rklag")
 enemy_num = 2
 enemy_spawn_delay = 0
 
-[sub_resource type="Resource" id="Resource_tcykg"]
+[sub_resource type="Resource" id="Resource_0l0e6"]
 script = ExtResource("4_3f3hf")
 time_start = 60
 time_end = 180
@@ -35,7 +37,7 @@ enemy = ExtResource("6_e5022")
 enemy_num = 1
 enemy_spawn_delay = 1
 
-[sub_resource type="Resource" id="Resource_ynyhl"]
+[sub_resource type="Resource" id="Resource_iilwk"]
 script = ExtResource("4_3f3hf")
 time_start = 180
 time_end = 210
@@ -43,7 +45,7 @@ enemy = ExtResource("7_333jh")
 enemy_num = 1
 enemy_spawn_delay = 2
 
-[sub_resource type="Resource" id="Resource_wf7k6"]
+[sub_resource type="Resource" id="Resource_onpyi"]
 script = ExtResource("4_3f3hf")
 time_start = 210
 time_end = 240
@@ -51,7 +53,7 @@ enemy = ExtResource("6_e5022")
 enemy_num = 2
 enemy_spawn_delay = 0
 
-[sub_resource type="Resource" id="Resource_0i2ps"]
+[sub_resource type="Resource" id="Resource_fa5r1"]
 script = ExtResource("4_3f3hf")
 time_start = 240
 time_end = 270
@@ -59,7 +61,7 @@ enemy = ExtResource("7_333jh")
 enemy_num = 1
 enemy_spawn_delay = 0
 
-[sub_resource type="Resource" id="Resource_awky6"]
+[sub_resource type="Resource" id="Resource_8sq03"]
 script = ExtResource("4_3f3hf")
 time_start = 240
 time_end = 240
@@ -67,7 +69,7 @@ enemy = ExtResource("8_07fsw")
 enemy_num = 1
 enemy_spawn_delay = 0
 
-[sub_resource type="Resource" id="Resource_7jdtj"]
+[sub_resource type="Resource" id="Resource_wb82d"]
 script = ExtResource("4_3f3hf")
 time_start = 270
 time_end = 300
@@ -75,7 +77,7 @@ enemy = ExtResource("6_e5022")
 enemy_num = 4
 enemy_spawn_delay = 0
 
-[sub_resource type="Resource" id="Resource_w8hkj"]
+[sub_resource type="Resource" id="Resource_cpubv"]
 script = ExtResource("4_3f3hf")
 time_start = 300
 time_end = 300
@@ -94,9 +96,19 @@ region_rect = Rect2(-4000, -4000, 4000, 4000)
 [node name="Player" parent="." instance=ExtResource("2_ce1ys")]
 
 [node name="EnemySpawner" parent="." instance=ExtResource("3_isfye")]
-spawns = Array[ExtResource("4_3f3hf")]([SubResource("Resource_ujhuy"), SubResource("Resource_tsfye"), SubResource("Resource_tcykg"), SubResource("Resource_ynyhl"), SubResource("Resource_wf7k6"), SubResource("Resource_0i2ps"), SubResource("Resource_awky6"), SubResource("Resource_7jdtj"), SubResource("Resource_w8hkj")])
+spawns = Array[ExtResource("4_3f3hf")]([SubResource("Resource_ujhuy"), SubResource("Resource_tsfye"), SubResource("Resource_0l0e6"), SubResource("Resource_iilwk"), SubResource("Resource_onpyi"), SubResource("Resource_fa5r1"), SubResource("Resource_8sq03"), SubResource("Resource_wb82d"), SubResource("Resource_cpubv")])
 
 [node name="Loot" type="Node2D" parent="." groups=["loot"]]
 
 [node name="ExperienceGem" parent="Loot" instance=ExtResource("4_2s6ox")]
 position = Vector2(169, -76)
+
+[node name="snd_Music" type="AudioStreamPlayer" parent="."]
+process_mode = 3
+stream = ExtResource("11_ewlkv")
+volume_db = -15.0
+autoplay = true
+parameters/looping = false
+script = ExtResource("12_5tavj")
+
+[connection signal="playerdeath" from="Player" to="snd_Music" method="_on_player_playerdeath"]

@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://c5f7fque4k784"
+path="res://.godot/imported/Under Night In-Birth - Blood Drain -Again- (Eltnum's theme) [8-bit].mp3-89077138ec31c13c6fb342e0e1589d34.mp3str"
+
+[deps]
+
+source_file="res://Audio/Music/Under Night In-Birth - Blood Drain -Again- (Eltnum's theme) [8-bit].mp3"
+dest_files=["res://.godot/imported/Under Night In-Birth - Blood Drain -Again- (Eltnum's theme) [8-bit].mp3-89077138ec31c13c6fb342e0e1589d34.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

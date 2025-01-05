@@ -1,0 +1,62 @@
+[gd_scene load_steps=5 format=3 uid="uid://bjpilxr5rg357"]
+
+[ext_resource type="Script" path="res://TitleScreen/menu.gd" id="1_fbilu"]
+[ext_resource type="FontFile" uid="uid://deansgva2wv7a" path="res://Font/tenderness.otf" id="1_hgpsk"]
+[ext_resource type="Texture2D" uid="uid://csklbmddcpcmr" path="res://TitleScreen/title screen.png" id="2_lhbti"]
+[ext_resource type="PackedScene" uid="uid://ko265oxurryv" path="res://Utility/basic_button.tscn" id="3_iyb30"]
+
+[node name="Menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_fbilu")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+visible = false
+layout_mode = 0
+offset_right = 646.0
+offset_bottom = 367.0
+color = Color(0.976471, 0.431373, 0.466667, 1)
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = -1.0
+offset_right = 2587.0
+offset_bottom = 1492.0
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("2_lhbti")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 32.0
+offset_right = 645.0
+offset_bottom = 181.0
+theme_override_fonts/font = ExtResource("1_hgpsk")
+theme_override_font_sizes/font_size = 72
+text = "ShadowMage 
+Survivor"
+horizontal_alignment = 1
+
+[node name="btn_play" parent="." instance=ExtResource("3_iyb30")]
+layout_mode = 0
+offset_left = 278.0
+offset_top = 247.0
+offset_right = 358.0
+offset_bottom = 277.0
+text = "Play"
+
+[node name="btn_exit" parent="." instance=ExtResource("3_iyb30")]
+layout_mode = 0
+offset_left = 277.0
+offset_top = 285.0
+offset_right = 357.0
+offset_bottom = 315.0
+text = "Exit
+"
+
+[connection signal="click_end" from="btn_play" to="." method="_on_btn_play_click_end"]
+[connection signal="click_end" from="btn_exit" to="." method="_on_btn_exit_click_end"]

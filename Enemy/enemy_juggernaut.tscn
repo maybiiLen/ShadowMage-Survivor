@@ -1,7 +1,7 @@
 [gd_scene load_steps=12 format=3 uid="uid://0kjuw1vcje6u"]
 
 [ext_resource type="Script" path="res://Enemy/enemy.gd" id="1_6c855"]
-[ext_resource type="Texture2D" uid="uid://buxc572p8h8rn" path="res://Textures/Enemy/kolbold_strong.png" id="2_j7se2"]
+[ext_resource type="Texture2D" uid="uid://480jamodcimf" path="res://Enemy/juggernaut.png" id="2_yjri7"]
 [ext_resource type="PackedScene" uid="uid://cwbrs0m7ub23s" path="res://Utility/hurt_box.tscn" id="3_7b8kg"]
 [ext_resource type="PackedScene" uid="uid://bb1ccyty0gydi" path="res://Utility/hit_box.tscn" id="4_mra7i"]
 [ext_resource type="AudioStream" uid="uid://c0in2bdhjr1j5" path="res://Audio/SoundEffect/enemy_hit.ogg" id="5_bg2dg"]
@@ -54,17 +54,19 @@ size = Vector2(19, 25)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sjsre"]
 size = Vector2(17.5, 29)
 
-[node name="enemy_goblin_strong" type="CharacterBody2D"]
+[node name="enemy_juggernaut" type="CharacterBody2D"]
 collision_layer = 5
 collision_mask = 5
 motion_mode = 1
 script = ExtResource("1_6c855")
-movement_speed = 30.0
-hp = 20
-damage = 3
+movement_speed = 40.0
+hp = 300
+knockback_recovery = 20.0
+experience = 100
+enemy_damage = 8
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_j7se2")
+texture = ExtResource("2_yjri7")
 hframes = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
